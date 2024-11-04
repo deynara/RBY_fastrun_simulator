@@ -1,0 +1,8 @@
+bulbasaur, 1: tackle: growl, 7: leech seed, 13: vine whip, 20: poison powder, 27: razor leaf, 34: growth, 41: sleep powder, 48: solar beam
+ivysaur, 1: tackle: growl: leech seed, 7: leech seed, 13: vine whip, 22: poison powder, 30: razor leaf, 38: growth, 46: sleep powder, 54: solar beam
+venusaur, 1: tackle: growl: leech seed: vine whip, 7: leech seed, 13: vine whip, 22: poison powder, 30: razor leaf, 43: growth, 55: sleep powder, 65: solar beam
+
+geodude, 1: tackle, 11: defense curl, 16: rock throw, 21: self-destruct, 26: harden, 31: earthquake, 36: explosion
+onix, 1: tackle: screech, 15: bind, 19: rock throw, 25: rage, 33: slam, 43: harden
+staryu, 1: tackle, 17: water gun, 22: harden, 27: recover, 32: swift, 37: minimize, 42: light screen, 47: hydro pump
+starmie, 1: water gun: harden: tackle
