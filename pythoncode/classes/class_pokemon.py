@@ -3,7 +3,7 @@ import os
 class Pokemon():
     def __init__(self, species, level = 5, name=None, costum_moves = []):
         self.__bst = self.__get_stats(species)
-        
+        #print ("DEBUG", self.__bst)
         self.species = species.title()
         if name == None:
             self.name = species
@@ -66,16 +66,16 @@ class Pokemon():
         file_path = own_path[0:own_path.find("RBY_fastrun_simulator")] + "RBY_fastrun_simulator/raw_data/pokemon.csv"
         with open(file_path) as csv_file:
             temp = csv_file.read() 
-        spec_pos = temp.find(pkm.lower())
+        spec_pos = temp.find(pkm.title())
         Pkm_exists = spec_pos >= 0
         if not Pkm_exists:
-            raise Exception (f"{pkm} was not found in pokemon.csv")
-        header = temp[0:temp.find("\n")].split(", ")
+            raise Exception (f"|{pkm}| was not found in pokemon.csv")
+        header = temp[0:temp.find("\n")].split(",")
         temp = temp[spec_pos:len(temp)]
         if temp.find("\n") >= 0:
-            spec_line = temp[0:temp.find("\n")].split(", ")
+            spec_line = temp[0:temp.find("\n")].split(",")
         else:
-            spec_line = temp.split(", ")
+            spec_line = temp.split(",")
         bst = {}
         if len(header) != len(spec_line):
             raise IndexError(f"Bst_initialization: Unbalanced entry counts {len(header)}|{len(spec_line)} between header and species line {pkm}. Did you forget a comma?")
