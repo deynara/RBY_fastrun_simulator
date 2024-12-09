@@ -22,9 +22,12 @@ def main():
 
     print("-----Starting Main----")
     
-    testing(Pokemon("bulbasaur"))
-    testing(Pokemon("ivysaur",17, costum_moves = []))
-    testing(Pokemon("Starmie",21, name= "Misty's Starmie", costum_moves = ["Tackle", "water gun", "bubble beam"]))
+    #testing(Pokemon("bulbasaur"))
+    #testing(Pokemon("ivysaur",17, costum_moves = []))
+    #testing(Pokemon("Starmie",21, name= "Misty's Starmie", costum_moves = ["Tackle", "water gun", "bubble beam"]))
+    #print(Pokemon("Bulbasaur"))
+    #print(Pokemon("Eevee", 15, "Veevee"))
+    print(Pokemon("ivysaur", 22, "the Evolved"))
     #print(test.bst_debug)
 
 

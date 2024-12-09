@@ -1,4 +1,5 @@
 import os
+import csv
 
 class Pokemon():
     def __init__(self, species, level = 5, name=None, costum_moves = []):
@@ -17,20 +18,65 @@ class Pokemon():
         self.__init_exp(level)
 
         self.attacks = costum_moves
-        if self.attacks != []: self.attacks = list(map(lambda x: x.title(), self.attacks))
-        self.__levelup_atks = self.__get_attacks()
+        self.__levelup_atks = {}
+        self.__init_attacks(level)
+        #self.attacks = costum_moves
+        #if self.attacks != []: self.attacks = list(map(lambda x: x.title(), self.attacks))
+        #self.__levelup_atks = self.__get_attacks()
         
+
         self.bst_debug = self.__bst
         self.lvl_atk_debug = self.__levelup_atks
 
+    def __init_attacks(self, level):
+        #Step 1 create dictionary levelup_attacks
+        pkm = self.species.title()
+        own_path =  os.path.dirname(os.path.realpath('__file__'))
+        file_path = own_path[0:own_path.find("RBY_fastrun_simulator")] + "RBY_fastrun_simulator/raw_data/RB_attacks_level.csv"
+        with open(file_path) as csv_file:
+            reader = csv.reader(csv_file, delimiter=',') 
+            entrys = [row for row in reader]
+            header = entrys.pop(0)
+        if pkm not in header:
+            raise Exception(f"Error initializing move data, couldn't find |{pkm}|in 'RB_attacks_level.csv.")
+        pos = header.index(pkm)
+        for entry in entrys:
+            new_key = int(entry[0])
+            new_value = entry[pos]
+            if new_value != "":
+                if new_key not in self.__levelup_atks.keys():
+                    self.__levelup_atks[new_key] = []
+                self.__levelup_atks[new_key].append(new_value)
+        #Step 2: get current moves
+        if self.attacks != []:
+            #print("DEBUG early return")
+            return #has costum moveset ->early return
+        if level < 1:
+            raise Exception(f"Error initializing move data, level can't be lower than 1, gave |{level}|.")
+        #print ("keys:", self.__levelup_atks.keys())
+        for i in range(1, level+1):
+            #print (i, i in self.__levelup_atks.keys())
+            if i in self.__levelup_atks.keys():
+                for attack in self.__levelup_atks[i]:
+                    self.learn_attack(attack)
+        
+
     def learn_attack(self, new_attack, forget=None):
+        #print ("DEBUG new attack", new_attack)
         if new_attack in self.attacks: return
         if forget == None:
-            if len(self.attacks) == 4:
+            if len(self.attacks) >= 4:
                 self.attacks.pop(0)
-            self.attacks.append(new_attack.title())   
+            self.attacks.append(new_attack.title())
+        else:
+            forget = forget.title()
+            if forget not in self.attacks:
+                raise Exception (f"{self.name} can't forget a move (|{forget}|), it doesn't know.")
+            else:
+                self.attacks[self.attacks.index(forget)] = new_attack.title()
+                
 
-    def __get_attacks(self):
+    def __get_attacks(self): #method replaced by __init_attacks
         pkm = self.species
         own_path =  os.path.dirname(os.path.realpath('__file__'))
         file_path = own_path[0:own_path.find("RBY_fastrun_simulator")] + "RBY_fastrun_simulator/raw_data/level_attacks.csv"
@@ -110,6 +156,13 @@ class Pokemon():
                     self.exp["next"] = int((5*n**3/4)) - self.exp["total"]
             case _:
                 raise Exception(f"Unknown Exp-group: {self.__bst['exp_group']}")
+    
+    def __repr__(self):
+        vocals = "aeiou"
+        proper_grammar = ""
+        if self.species[0].lower() in vocals:
+            proper_grammar = "n"
+        return f"|{self.name}| is a{proper_grammar} {self.species} and knows these moves {self.attacks}\nExp:{self.exp}\nStats:{self.__bst}\nlevelup attacks:{self.__levelup_atks}\n"
 
 
 
